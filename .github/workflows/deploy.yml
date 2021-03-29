@@ -1,0 +1,21 @@
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BACKEND_DOTENV: "${{secrets.BACKEND_DOTENV}}"
+      REPO_OWNER: "${{ github.event.repository.owner.name }}"
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo $BACKEND_DOTENV > .env
+          git config user.name $REPO_OWNER
+          git add -f .env
+          git commit --amend --allow-empty-message -m '' --reset-author
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
+          heroku_app_name: "${{secrets.HEROKU_APP_NAME}}"
+          heroku_email: "${{secrets.HEROKU_EMAIL}}"

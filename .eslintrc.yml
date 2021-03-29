@@ -1,0 +1,19 @@
+env:
+  es2021: true
+  node: true
+extends:
+  - airbnb-base
+settings: { import/resolver: { node: { extensions: [.ts] } } }
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaVersion: 12
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+rules:
+  indent: [error, 4]
+  import/extensions: [error, ignorePackages, { ts: never }]
+  "@typescript-eslint/no-unused-vars": error
+  "@typescript-eslint/no-shadow": error
+  no-shadow: 0
+  no-unused-vars: 0
