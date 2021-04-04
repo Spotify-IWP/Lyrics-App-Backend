@@ -68,6 +68,62 @@ const getUsername = async (req: Request, res: Response) => {
     }
 };
 
+const changePassword = async (req: Request, res: Response) => {
+    const {
+        username,
+        password,
+        newPassword,
+    } = req.body;
+    try {
+        const user = await User.findOneAndUpdate({
+            username,
+            password: hashPassword(password),
+        },
+        {
+            password: hashPassword(newPassword),
+        });
+        return user ? res.json({ success: true }) : badRequest(res);
+    } catch {
+        return serverError(res);
+    }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+    const {
+        username,
+        password,
+    } = req.body;
+    try {
+        const user = await User.findOneAndDelete({
+            username,
+            password: hashPassword(password),
+        });
+        return user ? res.json({ success: true }) : unauthorized(res);
+    } catch {
+        return serverError(res);
+    }
+};
+
+const changeUsername = async (req: Request, res: Response) => {
+    const {
+        username,
+        password,
+        newUsername,
+    } = req.body;
+    try {
+        const user = await User.findOneAndUpdate({
+            username,
+            password: hashPassword(password),
+        },
+        {
+            username: newUsername,
+        });
+        return user ? res.json({ success: true }) : badRequest(res);
+    } catch {
+        return serverError(res);
+    }
+};
+
 const createUser = async (req: Request, res: Response) => {
     const {
         username,
@@ -114,4 +170,7 @@ export {
     createUser,
     getUsername,
     loginUser,
+    changePassword,
+    changeUsername,
+    deleteUser,
 };
