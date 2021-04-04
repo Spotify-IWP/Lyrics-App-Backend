@@ -12,7 +12,8 @@ import {
 const app = express();
 
 app.use(cors());
-app.use(rateLimit());
 app.use(express.json());
+app.set('trust proxy', true);
+app.use(rateLimit());
 app.use('/auth', auth);
 app.listen(port);
