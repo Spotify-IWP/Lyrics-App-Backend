@@ -19,7 +19,7 @@ import {
 enum Property {
     query = 'query',
     body = 'body',
-    params = 'params',
+    headers = 'headers',
 }
 
 const getRegex = (regex: string) => new RegExp(regex);

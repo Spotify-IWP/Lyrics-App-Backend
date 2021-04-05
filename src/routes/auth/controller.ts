@@ -29,10 +29,8 @@ import {
 import User from '../../models/user';
 
 const getUser = (req: Request, res: Response) => {
-    const {
-        token,
-    } = req.params;
-    jwt.verify(token, jwtSecret, (err, body?: { username?: string }) => {
+    const { Authorization } = <{ Authorization?: string }>req.headers;
+    jwt.verify(Authorization!, jwtSecret, (err, body?: { username?: string }) => {
         if (err) {
             return unauthorized(res);
         }

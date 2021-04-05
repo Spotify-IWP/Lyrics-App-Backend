@@ -27,8 +27,8 @@ import {
 const router = express.Router();
 
 router.get(
-    '/user/:token',
-    handleValidations(jwtParam, Property.params),
+    '/user',
+    handleValidations(jwtParam, Property.headers),
     getUser,
 );
 
