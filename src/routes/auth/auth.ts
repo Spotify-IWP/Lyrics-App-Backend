@@ -6,7 +6,7 @@ import {
 } from '../../utils/misc';
 
 import {
-    jwtParam,
+    authorizationHeader,
     getUsernameQuery,
     userBody,
     changePasswordBody,
@@ -28,7 +28,7 @@ const router = express.Router();
 
 router.get(
     '/user',
-    handleValidations(jwtParam, Property.headers),
+    handleValidations(authorizationHeader, Property.headers),
     getUser,
 );
 

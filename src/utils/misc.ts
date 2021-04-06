@@ -20,7 +20,6 @@ enum Property {
     query = 'query',
     body = 'body',
     headers = 'headers',
-    params = 'params',
 }
 
 const getRegex = (regex: string) => new RegExp(regex);

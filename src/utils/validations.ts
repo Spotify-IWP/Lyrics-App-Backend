@@ -10,9 +10,9 @@ import {
     passwordRegex,
 } from './regex';
 
-const jwtParam = Joi.object().keys({
+const authorizationHeader = Joi.object().keys({
     authorization: Joi.string().pattern(getRegex(jwtRegex)).required(),
-}).required();
+}).required().unknown(true);
 
 const getUsernameQuery = Joi.object().keys({
     username: Joi.string().pattern(getRegex(usernameRegex)).required(),
@@ -32,7 +32,7 @@ const changePasswordBody = userBody.concat(Joi.object().keys({
 
 export {
     userBody,
-    jwtParam,
+    authorizationHeader,
     getUsernameQuery,
     changePasswordBody,
     changeUsernameBody,
