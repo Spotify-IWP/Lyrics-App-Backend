@@ -11,7 +11,7 @@ import {
 } from './regex';
 
 const jwtParam = Joi.object().keys({
-    Authorization: Joi.string().pattern(getRegex(jwtRegex)).required(),
+    authorization: Joi.string().pattern(getRegex(jwtRegex)).required(),
 }).required();
 
 const getUsernameQuery = Joi.object().keys({
