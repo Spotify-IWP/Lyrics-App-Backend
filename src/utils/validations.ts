@@ -1,8 +1,5 @@
 import Joi from 'joi';
-
-import {
-    getRegex,
-} from './misc';
+import { getRegex } from './misc';
 
 import {
     jwtRegex,

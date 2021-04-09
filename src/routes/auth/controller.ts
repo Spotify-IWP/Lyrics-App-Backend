@@ -1,14 +1,9 @@
 import jwt from 'jsonwebtoken';
-
-import {
-    Response,
-    Request,
-} from 'express';
-
-import {
-    hashPassword,
-    createJwt,
-} from '../../utils/misc';
+import { Response, Request } from 'express';
+import { jwtSecret } from '../../utils/envs';
+import { JWTBody } from '../../utils/types';
+import User from '../../models/user';
+import { hashPassword, createJwt } from '../../utils/misc';
 
 import {
     usernameRegex,
@@ -22,15 +17,9 @@ import {
     serverError,
 } from '../../utils/expressResponses';
 
-import {
-    jwtSecret,
-} from '../../utils/envs';
-
-import User from '../../models/user';
-
 const getUser = (req: Request, res: Response) => {
     const { headers } = req;
-    jwt.verify(headers.authorization!, jwtSecret, (err, body?: { username?: string }) => {
+    jwt.verify(headers.authorization!, jwtSecret, (err, body?: JWTBody) => {
         if (err) {
             return unauthorized(res);
         }
@@ -76,8 +65,7 @@ const changePassword = async (req: Request, res: Response) => {
         const user = await User.findOneAndUpdate({
             username,
             password: hashPassword(password),
-        },
-        {
+        }, {
             password: hashPassword(newPassword),
         });
         return user ? res.json({ success: true }) : badRequest(res);
@@ -112,8 +100,7 @@ const changeUsername = async (req: Request, res: Response) => {
         const user = await User.findOneAndUpdate({
             username,
             password: hashPassword(password),
-        },
-        {
+        }, {
             username: newUsername,
         });
         return user ? res.json({ success: true }) : badRequest(res);

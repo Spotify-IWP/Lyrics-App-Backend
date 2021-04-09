@@ -4,10 +4,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import auth from './routes/auth/auth';
-
-import {
-    port,
-} from './utils/envs';
+import { port } from './utils/envs';
 
 const app = express();
 

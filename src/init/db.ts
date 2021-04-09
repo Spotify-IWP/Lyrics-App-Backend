@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
-
-import {
-    dbURL,
-} from '../utils/envs';
+import { dbURL } from '../utils/envs';
 
 mongoose
     .connect(dbURL, {

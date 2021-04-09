@@ -1,9 +1,6 @@
 import express from 'express';
-
-import {
-    Property,
-    handleValidations,
-} from '../../utils/misc';
+import { handleValidations } from '../../utils/misc';
+import { Property } from '../../utils/types';
 
 import {
     authorizationHeader,

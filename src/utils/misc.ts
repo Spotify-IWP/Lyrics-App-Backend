@@ -8,19 +8,9 @@ import {
     Request,
 } from 'express';
 
-import {
-    jwtSecret,
-} from './envs';
-
-import {
-    badRequest,
-} from './expressResponses';
-
-enum Property {
-    query = 'query',
-    body = 'body',
-    headers = 'headers',
-}
+import { jwtSecret } from './envs';
+import { badRequest } from './expressResponses';
+import { Property } from './types';
 
 const getRegex = (regex: string) => new RegExp(regex);
 const hashPassword = (password: string) => crypto.createHash('sha256').update(`${password}.${jwtSecret}`).digest('hex');
@@ -49,6 +39,5 @@ export {
     hashPassword,
     createJwt,
     handleValidations,
-    Property,
     getRegex,
 };

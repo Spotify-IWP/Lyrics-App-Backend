@@ -1,13 +1,6 @@
 import mongoose from 'mongoose';
-
-import {
-    usernameRegex,
-    hashRegex,
-} from '../utils/regex';
-
-import {
-    getRegex,
-} from '../utils/misc';
+import { usernameRegex, hashRegex } from '../utils/regex';
+import { getRegex } from '../utils/misc';
 
 const userSchema = new mongoose.Schema({
     username: {
