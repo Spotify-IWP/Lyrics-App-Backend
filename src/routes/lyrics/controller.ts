@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import axios from 'axios';
 import { htmlToText } from 'html-to-text';
+import unidecode from 'unidecode';
 import User from '../../models/user';
 import { notFound, serverError } from '../../utils/expressResponses';
 
@@ -41,7 +42,7 @@ export const getLyrics = async (req: Request, res: Response) => {
             $push: { searchHistory: { artist, song } },
         });
 
-        return res.send({ lyrics: Buffer.from(lines.join('\n'), 'utf-8').toString('utf-8') });
+        return res.send({ lyrics: unidecode(lines.join('\n')) });
     } catch {
         return serverError(res);
     }
