@@ -1,8 +1,8 @@
-import fs from 'fs';
+import { existsSync } from 'fs';
 import { config } from 'dotenv';
 
-if (fs.existsSync('.env')) {
-    config();
+if (existsSync('.env')) {
+    config({ path: '.env' });
 } else {
     config({ path: '.env.sample' });
 }

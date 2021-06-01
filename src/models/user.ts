@@ -15,6 +15,17 @@ const userSchema = new mongoose.Schema({
         required: true,
         validation: getRegex(hashRegex),
     },
+
+    searchHistory: [{
+        artist: {
+            type: String,
+            required: true,
+        },
+        song: {
+            type: String,
+            required: true,
+        },
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

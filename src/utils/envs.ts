@@ -1,9 +1,3 @@
-const port = process.env.PORT || 3000;
-const jwtSecret = process.env.JWT_SECRET!;
-const dbURL = process.env.DB_URL!;
-
-export {
-    port,
-    jwtSecret,
-    dbURL,
-};
+export const port = process.env.PORT || 3000;
+export const jwtSecret = process.env.JWT_SECRET!;
+export const dbURL = process.env.DB_URL!;

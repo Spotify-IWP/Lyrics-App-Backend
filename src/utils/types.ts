@@ -1,14 +1,9 @@
-enum Property {
+export enum Property {
     query = 'query',
     body = 'body',
     headers = 'headers',
 }
 
-interface JWTBody {
+export interface JWTBody {
     username?: string;
 }
-
-export {
-    Property,
-    JWTBody,
-};

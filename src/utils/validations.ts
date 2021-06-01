@@ -7,30 +7,21 @@ import {
     passwordRegex,
 } from './regex';
 
-const authorizationHeader = Joi.object().keys({
+export const authorizationHeader = Joi.object().keys({
     authorization: Joi.string().pattern(getRegex(jwtRegex)).required(),
 }).required().unknown(true);
 
-const getUsernameQuery = Joi.object().keys({
+export const getUsernameQuery = Joi.object().keys({
     username: Joi.string().pattern(getRegex(usernameRegex)).required(),
 }).required();
 
-const userBody = getUsernameQuery.concat(Joi.object().keys({
+export const changePasswordBody = Joi.object().keys({
     password: Joi.string().pattern(getRegex(passwordRegex)).required(),
-}).required());
+}).required();
 
-const changeUsernameBody = userBody.concat(Joi.object().keys({
-    newUsername: Joi.string().pattern(getRegex(usernameRegex)).required(),
-}).required());
+export const userBody = getUsernameQuery.concat(changePasswordBody);
 
-const changePasswordBody = userBody.concat(Joi.object().keys({
-    newPassword: Joi.string().pattern(getRegex(passwordRegex)).required(),
-}).required());
-
-export {
-    userBody,
-    authorizationHeader,
-    getUsernameQuery,
-    changePasswordBody,
-    changeUsernameBody,
-};
+export const lyricsQuery = Joi.object().keys({
+    artist: Joi.string().required(),
+    song: Joi.string().required(),
+}).required();

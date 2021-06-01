@@ -1,7 +1,4 @@
-import jwt from 'jsonwebtoken';
 import { Response, Request } from 'express';
-import { jwtSecret } from '../../utils/envs';
-import { JWTBody } from '../../utils/types';
 import User from '../../models/user';
 import { hashPassword, createJwt } from '../../utils/misc';
 
@@ -17,19 +14,11 @@ import {
     serverError,
 } from '../../utils/expressResponses';
 
-const getUser = (req: Request, res: Response) => {
-    const { headers } = req;
-    jwt.verify(headers.authorization!, jwtSecret, (err, body?: JWTBody) => {
-        if (err) {
-            return unauthorized(res);
-        }
-        return res.json({
-            username: body!.username,
-        });
-    });
+export const getUser = (req: Request, res: Response) => {
+    res.json(res.locals.user);
 };
 
-const getPatterns = (req: Request, res: Response) => {
+export const getPatterns = (req: Request, res: Response) => {
     res.json({
         usernameRegex,
         passwordRegex,
@@ -37,7 +26,7 @@ const getPatterns = (req: Request, res: Response) => {
     });
 };
 
-const getUsername = async (req: Request, res: Response) => {
+export const getUsername = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({
             username: req.query.username,
@@ -55,61 +44,46 @@ const getUsername = async (req: Request, res: Response) => {
     }
 };
 
-const changePassword = async (req: Request, res: Response) => {
-    const {
-        username,
-        password,
-        newPassword,
-    } = req.body;
+export const changePassword = async (req: Request, res: Response) => {
+    const { password } = req.body;
     try {
-        const user = await User.findOneAndUpdate({
-            username,
-            password: hashPassword(password),
+        await User.findOneAndUpdate({
+            username: res.locals.user.username,
         }, {
-            password: hashPassword(newPassword),
+            password: hashPassword(password),
         });
-        return user ? res.json({ success: true }) : badRequest(res);
+        return res.json({ success: true });
     } catch {
         return serverError(res);
     }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
-    const {
-        username,
-        password,
-    } = req.body;
+export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const user = await User.findOneAndDelete({
-            username,
-            password: hashPassword(password),
+        await User.findOneAndDelete({
+            username: res.locals.user.username,
         });
-        return user ? res.json({ success: true }) : unauthorized(res);
+        return res.json({ success: true });
     } catch {
         return serverError(res);
     }
 };
 
-const changeUsername = async (req: Request, res: Response) => {
-    const {
-        username,
-        password,
-        newUsername,
-    } = req.body;
+export const changeUsername = async (req: Request, res: Response) => {
+    const { username } = req.body;
     try {
-        const user = await User.findOneAndUpdate({
-            username,
-            password: hashPassword(password),
+        await User.findOneAndUpdate({
+            username: res.locals.user.username,
         }, {
-            username: newUsername,
+            username,
         });
-        return user ? res.json({ success: true }) : badRequest(res);
+        return res.json({ success: true });
     } catch {
         return serverError(res);
     }
 };
 
-const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
     const {
         username,
         password,
@@ -128,7 +102,7 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
-const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
     const {
         username,
         password,
@@ -147,15 +121,4 @@ const loginUser = async (req: Request, res: Response) => {
     } catch {
         return serverError(res);
     }
-};
-
-export {
-    getUser,
-    getPatterns,
-    createUser,
-    getUsername,
-    loginUser,
-    changePassword,
-    changeUsername,
-    deleteUser,
 };
