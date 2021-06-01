@@ -20,7 +20,7 @@ export const handleValidations = (schema: Joi.Schema, property: Property) => {
             return next();
         }
 
-        return badRequest(res);
+        return badRequest(res, error.message);
     };
 
     return validate;
