@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.set('trust proxy', true);
-app.use(rateLimit());
+app.use(rateLimit({ message: 'Error: Too many requests' }));
 app.use('/auth', auth);
 app.use('/lyrics', lyrics);
 app.listen(port);

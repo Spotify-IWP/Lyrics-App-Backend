@@ -41,7 +41,7 @@ export const getLyrics = async (req: Request, res: Response) => {
             $push: { searchHistory: { artist, song } },
         });
 
-        return res.json({ lyrics: lines.join('\n') });
+        return res.send({ lyrics: lines.join('\n') });
     } catch {
         return serverError(res);
     }
@@ -53,7 +53,7 @@ export const getHistory = async (req: Request, res: Response) => {
             username: res.locals.user.username,
         });
 
-        return res.json({ searchHistory });
+        return res.send({ searchHistory });
     } catch {
         return serverError(res);
     }

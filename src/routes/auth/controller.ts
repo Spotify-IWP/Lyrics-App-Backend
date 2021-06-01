@@ -15,11 +15,11 @@ import {
 } from '../../utils/expressResponses';
 
 export const getUser = (req: Request, res: Response) => {
-    res.json(res.locals.user);
+    res.send(res.locals.user);
 };
 
 export const getPatterns = (req: Request, res: Response) => {
-    res.json({
+    res.send({
         usernameRegex,
         passwordRegex,
         jwtRegex,
@@ -32,11 +32,11 @@ export const getUsername = async (req: Request, res: Response) => {
             username: req.query.username,
         });
         if (user) {
-            return res.json({
+            return res.send({
                 available: false,
             });
         }
-        return res.json({
+        return res.send({
             available: true,
         });
     } catch {
@@ -52,7 +52,7 @@ export const changePassword = async (req: Request, res: Response) => {
         }, {
             password: hashPassword(password),
         });
-        return res.json({ success: true });
+        return res.send({ success: true });
     } catch {
         return serverError(res);
     }
@@ -63,7 +63,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         await User.findOneAndDelete({
             username: res.locals.user.username,
         });
-        return res.json({ success: true });
+        return res.send({ success: true });
     } catch {
         return serverError(res);
     }
@@ -77,7 +77,7 @@ export const changeUsername = async (req: Request, res: Response) => {
         }, {
             username,
         });
-        return res.json({ success: true });
+        return res.send({ success: true });
     } catch {
         return serverError(res);
     }
@@ -94,7 +94,7 @@ export const createUser = async (req: Request, res: Response) => {
             username,
             password: hashedPassword,
         });
-        res.json({
+        res.send({
             token: createJwt(username),
         });
     } catch {
@@ -113,7 +113,7 @@ export const loginUser = async (req: Request, res: Response) => {
         });
         const hashedPassword = hashPassword(password);
         if (hashedPassword === user.password) {
-            return res.json({
+            return res.send({
                 token: createJwt(username),
             });
         }
