@@ -41,11 +41,12 @@ export const getLyrics = async (req: Request, res: Response) => {
             $push: { searchHistory: { artist, song } },
         });
 
-        return res.send({ lyrics: Buffer.from(lines.join('\n')).toString() });
+        return res.send({ lyrics: Buffer.from(lines.join('\n'), 'utf-8').toString('utf-8') });
     } catch {
         return serverError(res);
     }
 };
+
 
 export const getHistory = async (req: Request, res: Response) => {
     try {
