@@ -6,10 +6,10 @@ import { getLyrics, getHistory } from './controller';
 
 const router = express.Router();
 
-router.use(handleValidations(
-    authorizationHeader, Property.headers,
-),
-setUser);
+router.use(
+    handleValidations(authorizationHeader, Property.headers),
+    setUser,
+);
 
 router.get(
     '/search',
