@@ -11,15 +11,15 @@ export const authorizationHeader = Joi.object().keys({
     authorization: Joi.string().pattern(getRegex(jwtRegex)).required(),
 }).required().unknown(true);
 
-export const getUsernameQuery = Joi.object().keys({
+export const usernameField = Joi.object().keys({
     username: Joi.string().pattern(getRegex(usernameRegex)).required(),
 }).required();
 
-export const changePasswordBody = Joi.object().keys({
+export const passwordField = Joi.object().keys({
     password: Joi.string().pattern(getRegex(passwordRegex)).required(),
 }).required();
 
-export const userBody = getUsernameQuery.concat(changePasswordBody);
+export const userBody = usernameField.concat(passwordField);
 
 export const lyricsQuery = Joi.object().keys({
     artist: Joi.string().required(),

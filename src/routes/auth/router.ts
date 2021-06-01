@@ -4,9 +4,9 @@ import { Property } from '../../utils/types';
 
 import {
     authorizationHeader,
-    getUsernameQuery,
+    usernameField,
     userBody,
-    changePasswordBody,
+    passwordField,
 } from '../../utils/validations';
 
 import {
@@ -29,7 +29,7 @@ router.get(
 
 router.get(
     '/username',
-    handleValidations(getUsernameQuery, Property.query),
+    handleValidations(usernameField, Property.query),
     getUsername,
 );
 
@@ -57,13 +57,13 @@ router.get(
 
 router.put(
     '/username',
-    handleValidations(getUsernameQuery, Property.body),
+    handleValidations(usernameField, Property.body),
     changeUsername,
 );
 
 router.put(
     '/password',
-    handleValidations(changePasswordBody, Property.body),
+    handleValidations(passwordField, Property.body),
     changePassword,
 );
 
