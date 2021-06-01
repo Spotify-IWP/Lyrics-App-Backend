@@ -47,7 +47,6 @@ export const getLyrics = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getHistory = async (req: Request, res: Response) => {
     try {
         const { searchHistory } = await User.findOne({
