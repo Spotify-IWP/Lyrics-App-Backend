@@ -42,7 +42,7 @@ export const getLyrics = async (req: Request, res: Response) => {
             $push: { searchHistory: { artist, song } },
         });
 
-        return res.send({ lyrics: unidecode(lines.join('\n')) });
+        return res.send({ lyrics: unidecode(lines.join('\n')).trim() });
     } catch {
         return serverError(res);
     }
