@@ -117,7 +117,7 @@ export const loginUser = async (req: Request, res: Response) => {
                 token: createJwt(username),
             });
         }
-        return unauthorized(res);
+        return unauthorized(res, 'Error: incorrect password provided');
     } catch (e) {
         return serverError(res, e.message);
     }
