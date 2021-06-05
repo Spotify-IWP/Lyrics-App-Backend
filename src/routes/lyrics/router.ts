@@ -1,8 +1,8 @@
 import express, { } from 'express';
 import { setUser, handleValidations } from '../../utils/middlewares';
 import { Property } from '../../utils/types';
-import { authorizationHeader, lyricsQuery } from '../../utils/validations';
-import { getLyrics, getHistory } from './controller';
+import { authorizationHeader, lyricsQuery, id } from '../../utils/validations';
+import { getLyrics, getHistory, clearHistory } from './controller';
 
 const router = express.Router();
 
@@ -20,6 +20,17 @@ router.get(
 router.get(
     '/history',
     getHistory,
+);
+
+router.delete(
+    '/history/:id',
+    handleValidations(id, Property.params),
+    clearHistory,
+);
+
+router.delete(
+    '/history',
+    clearHistory,
 );
 
 export default router;

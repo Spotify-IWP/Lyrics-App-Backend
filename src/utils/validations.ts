@@ -21,6 +21,10 @@ export const passwordField = Joi.object().keys({
 
 export const userBody = usernameField.concat(passwordField);
 
+export const id = Joi.object().keys({
+    id: Joi.string().required(),
+}).required();
+
 export const lyricsQuery = Joi.object().keys({
     artist: Joi.string().required(),
     song: Joi.string().required(),

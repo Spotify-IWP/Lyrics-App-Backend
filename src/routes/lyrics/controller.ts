@@ -41,10 +41,9 @@ export const getLyrics = async (req: Request, res: Response) => {
         }, {
             $push: { searchHistory: { artist, song } },
         });
-
         return res.send({ lyrics: unidecode(lines.join('\n')).trim() });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
 
@@ -53,9 +52,25 @@ export const getHistory = async (req: Request, res: Response) => {
         const { searchHistory } = await User.findOne({
             username: res.locals.user.username,
         });
-
         return res.send({ searchHistory });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
+    }
+};
+
+export const clearHistory = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        if (id) {
+            await User.findOneAndDelete({
+                id,
+            });
+        } else {
+            await User.findOneAndDelete();
+        }
+        return res.send({ success: true });
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };

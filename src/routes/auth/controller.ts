@@ -39,8 +39,8 @@ export const getUsername = async (req: Request, res: Response) => {
         return res.send({
             available: true,
         });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
 
@@ -53,8 +53,8 @@ export const changePassword = async (req: Request, res: Response) => {
             password: hashPassword(password),
         });
         return res.send({ success: true });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
 
@@ -64,8 +64,8 @@ export const deleteUser = async (req: Request, res: Response) => {
             username: res.locals.user.username,
         });
         return res.send({ success: true });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
 
@@ -78,8 +78,8 @@ export const changeUsername = async (req: Request, res: Response) => {
             username,
         });
         return res.send({ success: true });
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
 
@@ -97,8 +97,8 @@ export const createUser = async (req: Request, res: Response) => {
         res.send({
             token: createJwt(username),
         });
-    } catch {
-        badRequest(res);
+    } catch (e) {
+        badRequest(res, e.message);
     }
 };
 
@@ -118,7 +118,7 @@ export const loginUser = async (req: Request, res: Response) => {
             });
         }
         return unauthorized(res);
-    } catch {
-        return serverError(res);
+    } catch (e) {
+        return serverError(res, e.message);
     }
 };
