@@ -31,7 +31,7 @@ export const getLyrics = async (req: Request, res: Response) => {
         const lyrics = lyricsArr.find((l) => l);
 
         if (!lyrics) {
-            return notFound(res);
+            return notFound(res, 'Error: could not find the lyrics');
         }
 
         const lines = lyrics.split('\n').map((line: string) => htmlToText(line));
