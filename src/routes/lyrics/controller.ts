@@ -61,9 +61,9 @@ export const getHistory = async (req: Request, res: Response) => {
         const { searchHistory } = await User.findOne({
             username: res.locals.user.username,
         });
-        return res.send({ searchHistory });
+        res.send({ searchHistory });
     } catch (e) {
-        return serverError(res, e.message);
+        serverError(res, e.message);
     }
 };
 
@@ -78,8 +78,8 @@ export const clearHistory = async (req: Request, res: Response) => {
         } else {
             await User.findOneAndDelete();
         }
-        return res.send({ success: true });
+        res.send({ success: true });
     } catch (e) {
-        return serverError(res, e.message);
+        serverError(res, e.message);
     }
 };

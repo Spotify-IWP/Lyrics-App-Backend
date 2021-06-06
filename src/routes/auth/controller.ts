@@ -52,9 +52,9 @@ export const changePassword = async (req: Request, res: Response) => {
         }, {
             password: hashPassword(password),
         });
-        return res.send({ success: true });
+        res.send({ success: true });
     } catch (e) {
-        return serverError(res, e.message);
+        serverError(res, e.message);
     }
 };
 
@@ -63,9 +63,9 @@ export const deleteUser = async (req: Request, res: Response) => {
         await User.findOneAndDelete({
             username: res.locals.user.username,
         });
-        return res.send({ success: true });
+        res.send({ success: true });
     } catch (e) {
-        return serverError(res, e.message);
+        serverError(res, e.message);
     }
 };
 
@@ -77,9 +77,9 @@ export const changeUsername = async (req: Request, res: Response) => {
         }, {
             username,
         });
-        return res.send({ success: true });
+        res.send({ success: true });
     } catch (e) {
-        return serverError(res, e.message);
+        serverError(res, e.message);
     }
 };
 
