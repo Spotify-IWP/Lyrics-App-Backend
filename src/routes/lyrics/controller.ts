@@ -1,9 +1,18 @@
 import { Response, Request } from 'express';
 import axios from 'axios';
 import { htmlToText } from 'html-to-text';
-import unidecode from 'unidecode';
+import MIMEType from 'whatwg-mimetype';
+import iconv from 'iconv-lite';
 import User from '../../models/user';
 import { notFound, serverError } from '../../utils/expressResponses';
+
+axios.interceptors.response.use((response) => {
+    const mimeType = new MIMEType(response.headers['content-type']);
+    const charset = mimeType.parameters.get('charset') || 'UTF-8';
+    const c = iconv.encodingExists(charset) ? charset : 'UTF-8';
+    response.data = iconv.decode(response.data, c);
+    return response;
+});
 
 export const getLyrics = async (req: Request, res: Response) => {
     try {
@@ -41,7 +50,7 @@ export const getLyrics = async (req: Request, res: Response) => {
         }, {
             $push: { searchHistory: { artist, song } },
         });
-        return res.send({ lyrics: unidecode(lines.join('\n')).trim() });
+        return res.send({ lyrics: lines.join('\n').trim() });
     } catch (e) {
         return serverError(res, e.message);
     }
