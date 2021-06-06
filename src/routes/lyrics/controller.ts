@@ -21,6 +21,12 @@ export const getLyrics = async (req: Request, res: Response) => {
         const url = 'https://www.google.com/search?q=';
         const { artist, song } = req.query;
 
+        await User.findOneAndUpdate({
+            username: res.locals.user.username,
+        }, {
+            $push: { searchHistory: { artist, song } },
+        });
+
         const searchQueries = [
             encodeURIComponent(`${artist} ${song} song`),
             encodeURIComponent(`${artist} ${song} lyrics`),
@@ -44,12 +50,6 @@ export const getLyrics = async (req: Request, res: Response) => {
         }
 
         const lines = lyrics.split('\n').map((line: string) => htmlToText(line));
-
-        await User.findOneAndUpdate({
-            username: res.locals.user.username,
-        }, {
-            $push: { searchHistory: { artist, song } },
-        });
         return res.send({ lyrics: lines.join('\n').trim() });
     } catch (e) {
         return serverError(res, e.message);
