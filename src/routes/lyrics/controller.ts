@@ -21,11 +21,15 @@ export const getLyrics = async (req: Request, res: Response) => {
         const url = 'https://www.google.com/search?q=';
         const { artist, song } = req.query;
 
-        await User.findOneAndUpdate({
+        const user = await User.findOneAndUpdate({
             username: res.locals.user.username,
         }, {
             $push: { searchHistory: { artist, song } },
         });
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
+        }
 
         const searchQueries = [
             encodeURIComponent(`${artist} ${song} song`),
@@ -58,12 +62,18 @@ export const getLyrics = async (req: Request, res: Response) => {
 
 export const getHistory = async (req: Request, res: Response) => {
     try {
-        const { searchHistory } = await User.findOne({
+        const user = await User.findOne({
             username: res.locals.user.username,
         });
-        res.send({ searchHistory });
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
+        }
+
+        const { searchHistory } = user;
+        return res.send({ searchHistory });
     } catch (e) {
-        serverError(res, e.message);
+        return serverError(res, e.message);
     }
 };
 
@@ -71,15 +81,16 @@ export const clearHistory = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
-        if (id) {
-            await User.findOneAndDelete({
-                id,
-            });
-        } else {
-            await User.findOneAndDelete();
+        const user = id ? await User.findOneAndDelete({
+            id,
+        }) : await User.findOneAndDelete();
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
         }
-        res.send({ success: true });
+
+        return res.send({ success: true });
     } catch (e) {
-        serverError(res, e.message);
+        return serverError(res, e.message);
     }
 };

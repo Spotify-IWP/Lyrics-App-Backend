@@ -9,9 +9,9 @@ import {
 } from '../../utils/regex';
 
 import {
-    unauthorized,
     badRequest,
     serverError,
+    notFound,
 } from '../../utils/expressResponses';
 
 export const getUser = (req: Request, res: Response) => {
@@ -47,39 +47,51 @@ export const getUsername = async (req: Request, res: Response) => {
 export const changePassword = async (req: Request, res: Response) => {
     const { password } = req.body;
     try {
-        await User.findOneAndUpdate({
+        const user = await User.findOneAndUpdate({
             username: res.locals.user.username,
         }, {
             password: hashPassword(password),
         });
-        res.send({ success: true });
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
+        }
+        return res.send({ success: true });
     } catch (e) {
-        serverError(res, e.message);
+        return serverError(res, e.message);
     }
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        await User.findOneAndDelete({
+        const user = await User.findOneAndDelete({
             username: res.locals.user.username,
         });
-        res.send({ success: true });
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
+        }
+        return res.send({ success: true });
     } catch (e) {
-        serverError(res, e.message);
+        return serverError(res, e.message);
     }
 };
 
 export const changeUsername = async (req: Request, res: Response) => {
     const { username } = req.body;
     try {
-        await User.findOneAndUpdate({
+        const user = await User.findOneAndUpdate({
             username: res.locals.user.username,
         }, {
             username,
         });
-        res.send({ success: true });
+
+        if (!user) {
+            return notFound(res, 'Error: user not found');
+        }
+        return res.send({ success: true });
     } catch (e) {
-        serverError(res, e.message);
+        return serverError(res, e.message);
     }
 };
 
@@ -88,7 +100,9 @@ export const createUser = async (req: Request, res: Response) => {
         username,
         password,
     } = req.body;
+
     const hashedPassword = hashPassword(password);
+
     try {
         await User.create({
             username,
@@ -110,14 +124,14 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({
             username,
+            password: hashPassword(password),
         });
-        const hashedPassword = hashPassword(password);
-        if (hashedPassword === user.password) {
+        if (user) {
             return res.send({
                 token: createJwt(username),
             });
         }
-        return unauthorized(res, 'Error: incorrect password provided');
+        return notFound(res, 'Error: no user found matching the provided username and password');
     } catch (e) {
         return serverError(res, e.message);
     }
